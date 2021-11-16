@@ -1,0 +1,13 @@
+.contacts {
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+.contacts__list {
+  padding: 0px;
+  list-style: none;
+}
+
+.contacts__list_btn {
+  cursor: pointer;
+}

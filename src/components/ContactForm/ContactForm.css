@@ -1,0 +1,21 @@
+.input {
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.input__area {
+  display: block;
+  margin: auto;
+  text-align: center;
+  width: 300px;
+  border: 1px solid black;
+}
+
+.input__btn {
+  display: block;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
