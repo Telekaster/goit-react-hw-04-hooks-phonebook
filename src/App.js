@@ -1,47 +1,48 @@
-import React, { Component } from "react";
+import { useState } from "react";
 import shortid from "shortid";
 import ContactForm from "./components/ContactForm/ContactForm ";
 import Filter from "./components/Filter/Filter";
 import ContactList from "./components/ContactList/ContactList";
 
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: "",
-    name: "",
-    number: "",
-  };
+export default function App() {
+  
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState();
+  const [name, setName] = useState();
+  const [number, setNumber] = useState();
 
-  componentDidMount() {
-    if (localStorage.getItem("contacts") !== null) {
-      this.setState({ contacts: JSON.parse(localStorage.getItem("contacts")) });
+  function handleChange(evt) {
+
+    switch (evt.target.name) {
+      case 'name':
+        setName(evt.target.value);
+        break;
+      
+      case 'tel':
+        setNumber(evt.target.value);
+        break;
+    
+      default:
+        break;
     }
-  }
-
-  handleNameChange = (evt) => {
-    return this.setState({ name: evt.target.value });
   };
 
-  handlePhoneChange = (evt) => {
-    return this.setState({ number: evt.target.value });
-  };
-
-  handleAddContact = (evt) => {
+  function handleAddContact () {
     if (
-      this.state.contacts.find((contact) => {
-        return contact.name === this.state.name;
+      contacts.find((contact) => {
+        return contact.name === name;
       })
     ) {
-      alert(`${this.state.name} is already in contacts`);
+      alert(`${name} is already in contacts`);
     } else {
-      const contactsArr = this.state.contacts;
+      const contactsArr = contacts;
       const newContact = {
         key: shortid.generate(),
-        name: this.state.name,
-        number: this.state.number,
+        name: name,
+        number: number,
       };
 
-      this.setState({ contacts: [...contactsArr, newContact] });
+      setContacts([...contactsArr, newContact]);
 
       // LocalStorage-------
 
@@ -54,19 +55,19 @@ class App extends Component {
         const temperaryArr = JSON.parse(localStorage.getItem("contacts"));
         temperaryArr.push(newContact);
         localStorage.setItem("contacts", JSON.stringify(temperaryArr));
-      }
-      // --------------------
-    }
+      };
+      // -------------------
+    };
   };
 
-  filterContacts = (evt) => {
-    return this.setState({ filter: evt.target.value });
+  function filterContacts (evt) {
+    return setFilter(evt.target.value);
   };
 
-  deleteContact = (evt) => {
-    const contactsArr = this.state.contacts;
+  function deleteContact (evt) {
+    const contactsArr = contacts;
     const id = evt.target.id;
-    const elementForRemove = this.state.contacts.find(
+    const elementForRemove = contacts.find(
       (item) => item.key === id
     );
     const index = contactsArr.indexOf(elementForRemove);
@@ -77,31 +78,31 @@ class App extends Component {
     localStorage.setItem("contacts", JSON.stringify(contactsArr));
     // --------------------
 
-    this.setState({ contacts: [...contactsArr] });
+    setContacts([...contactsArr]);
   };
 
-  render() {
-    return (
-      <div className="container">
-        <h1>Phonebook</h1>
-        <ContactForm
-          handleNameChange={this.handleNameChange}
-          handlePhoneChange={this.handlePhoneChange}
-          handleAddContact={this.handleAddContact}
-        />
 
-        <h2>Contacts</h2>
-        <Filter filterContacts={this.filterContacts} />
 
-        <ContactList
-          contacts={this.state.contacts}
-          key={this.state.contacts.key}
-          state={this.state}
-          deleteContact={this.deleteContact}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="container">
+      <h1>Phonebook</h1>
+      <ContactForm
+        handleChange={handleChange}
+        handleAddContact={handleAddContact}
+      />
 
-export default App;
+      <h2>Contacts</h2>
+      <Filter
+        filterContacts={filterContacts}
+      />
+
+      <ContactList
+        filter={filter}
+        contacts={contacts}
+        key={contacts.key}
+        deleteContact={deleteContact}
+      />
+    </div>
+  
+  );
+};

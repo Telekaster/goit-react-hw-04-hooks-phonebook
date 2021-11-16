@@ -2,15 +2,14 @@ import React, { Component } from "react";
 import styles from "./ContactForm.css";
 
 function ContactForm({
-  handleNameChange,
-  handlePhoneChange,
+  handleChange,
   handleAddContact,
 }) {
   return (
     <div className="input__area">
       <p>Name</p>
       <input
-        onChange={handleNameChange}
+        onChange={handleChange}
         type="text"
         name="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -18,9 +17,17 @@ function ContactForm({
         required
       />
       <p>Phone</p>
-      <input type="tel" onChange={handlePhoneChange} />
+      <input
+        type="tel"
+        name="tel"
+        onChange={handleChange}
+      />
 
-      <button type="button" className="input__btn" onClick={handleAddContact}>
+      <button
+        type="button"
+        className="input__btn"
+        onClick={handleAddContact}
+      >
         Add contact
       </button>
     </div>
